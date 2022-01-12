@@ -6,10 +6,7 @@ module StringMap = Map.Make (struct
   let compare = compare
 end)
 
-let rec keep_some = function
-  | [] -> []
-  | Some x :: xs -> x :: keep_some xs
-  | None :: xs -> keep_some xs
+let keep_some l = List.filter_map Fun.id l
 
 let snake_case =
   let re1 = Re.Pcre.regexp "([A-Z]+)([A-Z][a-z]{2,})" in
@@ -51,5 +48,3 @@ let unsnoc l =
     | x :: xs -> go (x :: acc) xs
   in
   go [] l
-
-let some = function Some x -> x | None -> failwith "some: None"
