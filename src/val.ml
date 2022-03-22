@@ -348,7 +348,7 @@ module Impl = struct
           %s in
         let full_path = (Uri.path uri) ^ path in
         let uri = Uri.with_path uri full_path in
-        let uri = Uri.with_query' uri (List.filter (fun (_k, v) -> v <> "") query) in
+        let uri = Uri.with_query' uri (List.filter (fun (_k, v) -> v <> {ocamlswagger||ocamlswagger}) query) in
         let headers = %s in
         %s
       |}

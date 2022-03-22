@@ -38,9 +38,16 @@ let format_comment =
     | w when String.length w > 7 && String.sub w 0 8 = "https://" -> w
     | w -> snake_case w
   in
+  let re_quotes = Re.Pcre.regexp {|"|} in
+  let re_comments = Re.Pcre.regexp {|\*\)|} in
   fun text ->
     text
     |> Re.replace re ~f:(fun g -> "\\" ^ Re.Group.get g 0)
+    (* Change quotes to prevent comments containing an unterminated
+       string literal errors. *)
+    |> Re.replace re_quotes ~f:(fun _ -> "'")
+    (* Replace end of comments! *)
+    |> Re.replace re_comments ~f:(fun _ -> "* )")
     |> String.split_on_char ' ' |> List.map snake_case |> String.concat " "
 
 let unsnoc l =
