@@ -57,3 +57,26 @@ let unsnoc l =
     | x :: xs -> go (x :: acc) xs
   in
   go [] l
+
+let opt_cons o l = match o with Some o -> o :: l | None -> l
+
+let fold_left_map' f l =
+  let rec aux x acc = function
+    | [] -> (x, acc)
+    | hd :: tl ->
+        let x, acc = f x acc hd in
+        aux x acc tl
+  in
+  aux None [] l
+
+let ocaml_doc descr =
+  let open Ppxlib in
+  let loc = Ppxlib.Location.none in
+  let module Ast_builder = Ppxlib.Ast_builder.Make (struct
+    let loc = loc
+  end) in
+  let open Ast_builder in
+  let name = Located.mk "ocaml.doc" in
+  let doc = estring (format_comment descr) in
+  let doc = pstr_eval [%expr [%e doc]] [] in
+  attribute ~name ~payload:(PStr [ doc ])
