@@ -18,6 +18,10 @@ depends: [
   "yojson" {>= "1.7.0"}
   "ppxlib" {>= "0.25.0"}
   "odoc" {with-doc}
+  "ppx_deriving_yojson" {with-test}
+  "cohttp-lwt-unix" {with-test}
+  "uri" {with-test}
+  "ppx_deriving_yojson" {with-test}
 ]
 build: [
   ["dune" "subst"] {dev}
