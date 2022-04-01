@@ -1,0 +1,21 @@
+name: Build Example API
+on: [push]
+jobs:
+  build-example-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Use OCaml 4.13.1
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: ocaml-base-compiler.4.13.1
+          opam-repositories: |
+            default: https://github.com/ocaml/opam-repository.git
+      
+      - run: opam install . --deps-only --with-test
+      
+      - run: opam exec -- dune build
+
+      - run: opam exec -- dune runtest

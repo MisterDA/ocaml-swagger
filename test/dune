@@ -1,0 +1,15 @@
+(rule
+ (deps ../src/main.exe examples.json)
+ (target example.ml)
+ (action (with-stdout-to example.ml (run ../src/main.exe -reference-root "definitions" examples.json ))))
+
+(test
+ (name example)
+ (preprocess  (pps ppx_deriving_yojson))
+ (libraries   cohttp-lwt-unix
+                uri
+                lwt
+                ppx_deriving_yojson
+                ppx_deriving_yojson.runtime
+                re.pcre
+                yojson))
